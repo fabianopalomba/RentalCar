@@ -3,6 +3,7 @@ package com.example.RentalCar.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -15,10 +16,12 @@ public class Booking {
     @NotNull
     private Boolean approved;
 
+    @Future
     @Temporal(TemporalType.DATE)
     @NotNull
     private Date initialDate;
 
+    @Future
     @Temporal(TemporalType.DATE)
     @NotNull
     private Date finalDate;

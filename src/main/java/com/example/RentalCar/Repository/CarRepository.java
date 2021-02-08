@@ -1,12 +1,12 @@
 package com.example.RentalCar.Repository;
 
 import com.example.RentalCar.Entity.Car;
-import com.example.RentalCar.Entity.CarType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
+@Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
     Car getByTarga(String targa);
     Boolean existsByTarga(String targa);
