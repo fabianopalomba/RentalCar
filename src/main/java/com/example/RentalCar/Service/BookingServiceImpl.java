@@ -41,7 +41,7 @@ public class BookingServiceImpl implements BookingService{
         LocalDateTime finaldate = LocalDateTime.from(booking.getFinalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         int contatore = 0;
         if (LocalDateTime.now().plusDays(2).isBefore(initialdate) && initialdate.isBefore(finaldate)) {
-            List<Booking> bookingList = bookingRepository.getByCar_Targa(booking.getCar().getTarga());
+            List<Booking> bookingList = bookingRepository.getByCar_TargaAndApprovedIsTrue(booking.getCar().getTarga());
             for (Booking a : bookingList) {
                 Date indate = new SimpleDateFormat("yyyy-MM-dd").parse(a.getInitialDate().toString());
                 Date findate = new SimpleDateFormat("yyyy-MM-dd").parse(a.getFinalDate().toString());
@@ -62,7 +62,7 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public List<Booking> getByCarTarga(String targa) {
-        return bookingRepository.getByCar_Targa(targa);
+        return bookingRepository.getByCar_TargaAndApprovedIsTrue(targa);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class BookingServiceImpl implements BookingService{
             LocalDateTime finaldatenew = LocalDateTime.from(bookingnew.getFinalDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
             if (LocalDateTime.now().plusDays(2L).isBefore(initialdateold) && LocalDateTime.now().plusDays(2L).isBefore(initialdatenew) ){
                 int contatore = 0;
-                List<Booking> bookingList = bookingRepository.getByCar_Targa(bookingnew.getCar().getTarga());
+                List<Booking> bookingList = bookingRepository.getByCar_TargaAndAndIdIsNot(bookingnew.getCar().getTarga(), bookingold.getId());
                 for (Booking a : bookingList){
                     Date indate = new SimpleDateFormat("yyyy-MM-dd").parse(a.getInitialDate().toString());
                     Date findate = new SimpleDateFormat("yyyy-MM-dd").parse(a.getFinalDate().toString());

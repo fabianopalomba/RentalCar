@@ -1,6 +1,7 @@
 package com.example.RentalCar.Service;
 
 import com.example.RentalCar.Entity.User;
+import com.example.RentalCar.Security.Jwt.JwtResponse;
 
 import java.util.List;
 
@@ -11,5 +12,8 @@ public interface UserService {
     User getById(Long id);
     Boolean existsById(Long id);
     User editUser(User user);
-    User login(Long id, String password);
+    JwtResponse login(String username, String password);
+    User getByUsername(String username);
+    Boolean existsByUsername(String username);
+    Boolean makeAdmin(String username);
 }

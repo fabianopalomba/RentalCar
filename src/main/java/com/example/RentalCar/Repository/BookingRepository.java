@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> getByUser_Id(Long id);
-    List<Booking> getByCar_Targa(String targa);
+    List<Booking> getByCar_TargaAndApprovedIsTrue(String targa);
+    List<Booking> getByCar_TargaAndAndIdIsNot(String targa, Long id);
     Booking getById(Long id);
 }

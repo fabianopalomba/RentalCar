@@ -10,6 +10,5 @@ import javax.transaction.Transactional;
 public interface CarRepository extends JpaRepository<Car, Long> {
     Car getByTarga(String targa);
     Boolean existsByTarga(String targa);
-    @Transactional
     void deleteByTarga(String targa);
 }
