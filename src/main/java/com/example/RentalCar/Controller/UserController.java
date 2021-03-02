@@ -24,6 +24,10 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody User userpassed){
         try {
+            if (userService.existsByUsername(userpassed.getUsername())) {
+                return new ResponseEntity<>(("Fail -> Username is already taken!"),
+                        HttpStatus.BAD_REQUEST);
+            }
             User user = userService.save(userpassed);
             if (user!=null) return new ResponseEntity<>(HttpStatus.OK);
             else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -36,7 +40,7 @@ public class UserController {
     @GetMapping("/getuserlist")
     public ResponseEntity<List<User>> getuserlist(){
         try {
-            List<User> users = userService.findAll();
+            List<User> users = userService.getuserlist();
             return new ResponseEntity<>(users, HttpStatus.OK);
         }
         catch (Exception e){
@@ -77,6 +81,17 @@ public class UserController {
         }
     }
 
+    @GetMapping("/getuserbyusername/{username}")
+    public ResponseEntity<User> getuserbyusername(@PathVariable String username){
+        try{
+            User user = userService.getByUsername(username);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("/edituser")
     public ResponseEntity<HttpStatus> edituser(@RequestBody User userfinal){
         try{
@@ -90,8 +105,8 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/makeadmin/{username}")
-    public ResponseEntity<HttpStatus> makeadmin(@PathVariable String username){
+    @PutMapping("/makeadmin")
+    public ResponseEntity<HttpStatus> makeadmin(@RequestBody String username){
         try{
             if (userService.makeAdmin(username)){
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -103,4 +118,8 @@ public class UserController {
         }
     }
 
+    @PostMapping("/validatetoken")
+    public ResponseEntity<String> validatetoken(@RequestBody String token){
+        return new ResponseEntity<>(userService.validateToken(token) , HttpStatus.OK);
+    }
 }

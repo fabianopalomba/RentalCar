@@ -1,8 +1,10 @@
 package com.example.RentalCar.Service;
 
 import com.example.RentalCar.Entity.Booking;
+import com.example.RentalCar.Entity.Car;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 public interface BookingService {
@@ -15,4 +17,6 @@ public interface BookingService {
     void deleteById(Long id);
     Booking approveBooking(Booking booking);
     Booking editBooking(Booking booking) throws ParseException;
+    List<Car> getCarsForEdit(Booking booking) throws ParseException;
+    List<Car> getCarsByDates(List<Date> dates) throws ParseException;
 }

@@ -7,6 +7,8 @@ import com.example.RentalCar.Repository.UserRepository;
 import com.example.RentalCar.Security.Jwt.JwtProvider;
 import com.example.RentalCar.Security.Jwt.JwtResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashSet;
 import java.util.List;
@@ -52,8 +56,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> getuserlist() {
+        Role role = roleService.findByName(RoleName.ROLE_CUSTOMER);
+        return userRepository.findAllByRoles(role);
     }
 
     @Override
@@ -73,14 +78,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User editUser(User userfinal) {
-        if(userRepository.existsById(userfinal.getId())) {
-            User userold = userRepository.getById(userfinal.getId());
+        if(userRepository.existsByUsername(userfinal.getUsername())) {
+            User userold = userRepository.getByUsername(userfinal.getUsername());
             userold.setBirthday(userfinal.getBirthday());
-            userold.setPassword(userfinal.getPassword());
             userold.setName(userfinal.getName());
             userold.setSurname(userfinal.getSurname());
-            Set<Role> roles = new HashSet<>(userfinal.getRoles());
-            userold.setRoles(roles);
+            if (!userold.getPassword().equals(userfinal.getPassword())){
+                userold.setPassword(encoder.encode(userfinal.getPassword()));
+            }
             userRepository.save(userold);
             return userold;
         }
@@ -121,5 +126,8 @@ public class UserServiceImpl implements UserService{
         else return false;
     }
 
-
+    @Override
+    public String validateToken(String token) {
+        return jwtProvider.getUserNameFromJwtToken(token);
+    }
 }

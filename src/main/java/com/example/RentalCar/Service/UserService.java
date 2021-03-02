@@ -3,11 +3,13 @@ package com.example.RentalCar.Service;
 import com.example.RentalCar.Entity.User;
 import com.example.RentalCar.Security.Jwt.JwtResponse;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface UserService {
     User save(User user);
-    List<User> findAll();
+    List<User> getuserlist();
+    @Transactional
     void deleteById(Long id);
     User getById(Long id);
     Boolean existsById(Long id);
@@ -16,4 +18,5 @@ public interface UserService {
     User getByUsername(String username);
     Boolean existsByUsername(String username);
     Boolean makeAdmin(String username);
+    String validateToken(String token);
 }

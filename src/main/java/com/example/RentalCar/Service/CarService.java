@@ -3,6 +3,7 @@ package com.example.RentalCar.Service;
 import com.example.RentalCar.Entity.Car;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 public interface CarService {
@@ -13,5 +14,4 @@ public interface CarService {
     @Transactional
     void deleteByTarga(String targa);
     Car updateCar(Car car);
-
 }

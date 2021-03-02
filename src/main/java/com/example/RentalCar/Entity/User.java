@@ -47,6 +47,10 @@ public class User {
 
     public User() { }
 
+    public User(@NotBlank @Size(min = 3, max = 50) String username) {
+        this.username = username;
+    }
+
     public User(@NotBlank @Size(min = 3, max = 50) String name, @NotBlank @Size(min = 3, max = 50) String surname, @NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(min = 6, max = 100) String password, @NotNull Date birthday) {
         this.name = name;
         this.surname = surname;

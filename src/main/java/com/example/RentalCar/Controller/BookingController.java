@@ -1,6 +1,7 @@
 package com.example.RentalCar.Controller;
 
 import com.example.RentalCar.Entity.Booking;
+import com.example.RentalCar.Entity.Car;
 import com.example.RentalCar.Service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -70,6 +73,17 @@ public class BookingController {
         }
     }
 
+    @GetMapping("/getbookingbyid/{id}")
+    public ResponseEntity<Booking> getbookingbyid(@PathVariable Long id){
+        try {
+            Booking booking = bookingService.getById(id);
+            return new ResponseEntity<>(booking, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/getbookinglistbyuser/{id}")
     public ResponseEntity<List<Booking>> getbookinglistbyuser(@PathVariable Long id){
         try {
@@ -93,7 +107,6 @@ public class BookingController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deletebookingbyid/{id}")
     public ResponseEntity<HttpStatus> deletebookingbyid(@PathVariable Long id){
         try{
@@ -105,4 +118,24 @@ public class BookingController {
         }
     }
 
+    @PostMapping("/getcarsbydates")
+    public ResponseEntity<List<Car>> getcarsbydates(@RequestBody List<Date> dates){
+        try{
+            List<Car> cars = bookingService.getCarsByDates(dates);
+            return new ResponseEntity<>(cars, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/getcarsforedit")
+    public ResponseEntity<List<Car>> getcarsforedit(@RequestBody Booking booking){
+        try{
+            List<Car> cars = bookingService.getCarsForEdit(booking);
+            return new ResponseEntity<>(cars, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

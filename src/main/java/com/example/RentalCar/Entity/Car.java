@@ -34,6 +34,10 @@ public class Car {
     public Car() {
     }
 
+    public Car(@NotBlank @Size(min = 7, max = 7) String targa) {
+        this.targa = targa;
+    }
+
     public Car(@NotBlank String targa, @NotBlank String brand, @NotBlank String model, @NotBlank Long year, @NotBlank CarType carType) {
         this.targa = targa;
         this.brand = brand;
